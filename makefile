@@ -5,7 +5,7 @@ install:
 windows: 
 	@echo "Windows Commands"
 	venv\Scripts\activate
-	flask -A __init__ -debug run
+	flask -A __init__ --debug run
 
 linux:
 	@echo "Linux Commands"
