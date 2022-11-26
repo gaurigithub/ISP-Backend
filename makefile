@@ -1,6 +1,6 @@
 install: 
 	python3 -m venv venv
-	pip install flask flask-pymongo
+	pip install flask flask_pymongo
 
 windows: 
 	@echo "Windows Commands"
