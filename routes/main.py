@@ -33,6 +33,9 @@ def upload():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(UPLOAD_FOLDER, filename))
+        # encrypt file 
+        # sign the hash of original file using fingerprint
+        # put the encrypted file and sign file on students documents array as object with 3 parameters
         return 'File Saved to Uploads!'
 
     # DO NOT FORGET TO DELETE THE DOCUMENT ONCE UPLOADED AND ENCRYPTED
