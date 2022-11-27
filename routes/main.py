@@ -1,10 +1,11 @@
 from flask import Blueprint
 
+from ..mongodb.model import Accounts
 from ..mongodb.mongo_connect import mongo
 
 main = Blueprint('main', __name__)
 
-@main.route('/')
+@main.route('/', methods=['POST'])
 def login():
     # account_collection = mongo.db.get_collection('accounts')
     # account_collection.insert_one({
@@ -20,7 +21,8 @@ def login():
     #         }
     #     ]
     # })
-    return "Login Page!"
+
+    return Accounts().login()
 
 @main.route('/authority')
 def institute_authority():

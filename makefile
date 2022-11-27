@@ -1,4 +1,5 @@
 install: 
+	pip install python-gnupg hashlib
 	python3 -m venv venv
 	pip install flask flask_pymongo
 
