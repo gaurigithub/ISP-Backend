@@ -1,7 +1,7 @@
 install: 
-	pip install python-gnupg hashlib
+	pip install python-gnupg hashlib 
 	python3 -m venv venv
-	pip install flask flask_pymongo
+	pip install flask flask_pymongo ipfshttpclient
 
 windows: 
 	@echo "Windows Commands"
