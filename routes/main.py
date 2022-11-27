@@ -1,6 +1,6 @@
 from flask import Blueprint
 
-from ..mongo_connect import mongo
+from ..mongodb.mongo_connect import mongo
 
 main = Blueprint('main', __name__)
 

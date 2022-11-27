@@ -1,7 +1,7 @@
 from flask import Flask
 
 from .env import *
-from .mongo_connect import mongo
+from .mongodb.mongo_connect import mongo
 from .routes.main import main
 
 # create flask app
