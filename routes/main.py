@@ -7,21 +7,6 @@ main = Blueprint('main', __name__)
 
 @main.route('/', methods=['POST'])
 def login():
-    # account_collection = mongo.db.get_collection('accounts')
-    # account_collection.insert_one({
-    #     'username': 'panda',
-    #     'email': 'panda@foo.bar',
-    #     'passphrase': 'panda',
-    #     'pub_key': '',
-    #     'documents': [
-    #         {
-    #             'encrypted_link': '',
-    #             'sign_reg_link': '',
-    #             'sign_std_link': ''
-    #         }
-    #     ]
-    # })
-
     return Accounts().login()
 
 @main.route('/authority')

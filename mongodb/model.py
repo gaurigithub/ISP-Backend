@@ -2,6 +2,7 @@ from flask import request, jsonify
 
 from ..crypto.hash import Hash
 from .mongo_connect import mongo
+from ..crypto.key_generator import KeyGenerator
 
 class Accounts:
     
@@ -22,9 +23,10 @@ class Accounts:
                 "email": request.form.get('email'),
                 "password": passphrase,
                 "designation": request.form.get('designation'),
-                "pub_key": "",
+                "fingerprint": "",
                 "documents": []
             }
+            user['fingerprint'] = KeyGenerator().generate_key(name=user['name'], email=user['email'], secretkey=request.form.get('password'))
 
             # insert record
             accounts_collection.insert_one(user)
@@ -36,7 +38,7 @@ class Accounts:
                     "email": record['email'],
                     "password": record['password'],
                     "designation": record['designation'],
-                    "pub_key": record['pub_key'],
+                    "fingerprint": record['fingerprint'],
                     "documents": record['documents']
                 }), 200
             else:
@@ -49,6 +51,6 @@ class Accounts:
             "email": user['email'],
             "password": user['password'],
             "designation": user['designation'],
-            "pub_key": user['pub_key'],
+            "fingerprint": user['fingerprint'],
             "documents": user['documents']
         }), 200
