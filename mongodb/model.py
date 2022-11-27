@@ -54,3 +54,25 @@ class Accounts:
             "fingerprint": user['fingerprint'],
             "documents": user['documents']
         }), 200
+
+    def getkey(self):
+        
+        # check for request parameters
+        print(request.form)
+
+        # params
+        fp = request.form.get('fingerprint')
+        passphrase = request.form.get('password')
+
+        # retrieve keys from fingerprint
+        kg = KeyGenerator()
+        kg_pvt = kg.export_key(keyid=fp, pwd=passphrase, private=True)      # secret key export
+        kg_pub = kg.export_key(keyid=fp)                                    # public key export
+
+        return jsonify({
+            'pub_key': kg_pub,
+            'pvt_key': kg_pvt
+        }), 200
+
+    def update(self):
+        pass

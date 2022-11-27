@@ -9,6 +9,10 @@ main = Blueprint('main', __name__)
 def login():
     return Accounts().login()
 
+@main.route('/getkeys', methods=['GET'])
+def getkeys():
+    return Accounts().getkey()
+
 @main.route('/authority')
 def institute_authority():
     return "Only Institute Authority Allowed"
