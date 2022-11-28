@@ -1,4 +1,5 @@
 import gnupg
+from .hash import Hash
 
 class Signature:
     # setup gnupg
@@ -13,6 +14,7 @@ class Signature:
         # read message
         stream = open(self.documentspath + filename, 'rb')
         self.message = stream.read()
+        self.message = Hash().hash(message=self.message)
         stream.close()
 
         # sign 
