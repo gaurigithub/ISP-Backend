@@ -74,5 +74,46 @@ class Accounts:
             'pvt_key': kg_pvt
         }), 200
 
-    def update(self):
-        pass
+    def add(self, obj, email):
+        
+        # find user if exists in db 
+        accounts_collection = mongo.db.get_collection('accounts')
+
+        accounts_collection.update_one({
+            'email': email
+        }, {
+            '$push': {
+                'documents': obj
+            }
+        })
+        
+        return jsonify({
+            'message': 'Successfully Updated Document to Students Account!'
+        }), 200
+
+    def sign(self):
+
+        email = request.form.get('email')
+        certificate = request.form.get('certname')
+        
+        # find user if exists in db 
+        accounts_collection = mongo.db.get_collection('accounts')
+
+        # get message of that file
+        doc = accounts_collection.find_one({
+            'email': email,
+            'documents.certificate': {
+                '$eq' : certificate
+            } 
+        }, {
+            'documents.$': 1
+        })
+
+        # check retrieved data
+        print(doc)
+
+        # save file 
+
+        return jsonify({
+            'message': f'Successfully Signed Document {certificate}!'
+        }), 200        
