@@ -17,7 +17,7 @@ class Encryptor:
 
         # encrypted 
         output_path = self.encryptpath + filename + '.enc'
-        self.encrypted_data = self.gpg.encrypt_file(stream, recipients=keyid, output=output_path, always_trust=True)
+        self.encrypted_data = self.gpg.encrypt_file(stream, recipients=keyid, output=output_path, always_trust=False)
 
         print(self.encrypted_data.status)
 

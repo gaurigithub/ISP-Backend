@@ -3,6 +3,7 @@ from flask import Blueprint, request
 from werkzeug.utils import secure_filename
 
 from ..mongodb.model import Accounts
+from ..crypto.signature import Signature
 
 main = Blueprint('main', __name__)
 
@@ -35,6 +36,7 @@ def upload():
         file.save(os.path.join(UPLOAD_FOLDER, filename))
         # encrypt file 
         # sign the hash of original file using fingerprint
+        Signature().sign(filename=filename, password=request.form.get('password'), email=request.form.get('email'))
         # put the encrypted file and sign file on students documents array as object with 3 parameters
         return 'File Saved to Uploads!'
 
