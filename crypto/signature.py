@@ -1,11 +1,12 @@
 import gnupg
 from .hash import Hash
+from ..env import UPLOAD_FOLDER, SIGNED_FOLDER
 
 class Signature:
     # setup gnupg
     def __init__(self):
-        self.documentspath = './crypto/uploads/'
-        self.signaturepath = './crypto/signed/'
+        self.documentspath = UPLOAD_FOLDER
+        self.signaturepath = SIGNED_FOLDER
         self.gpg = gnupg.GPG(gnupghome='/home/garvitsingh/.gnupg')
         self.gpg.encoding = 'utf-8'
 
