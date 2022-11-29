@@ -85,7 +85,10 @@ class Accounts:
             'email': request.form.get('studentid')
         }, {
             '$push': {
-                'documents': id
+                'documents': {
+                    'id': id,
+                    'certificate': request.form.get('certname')
+                }
             }
         })
         
