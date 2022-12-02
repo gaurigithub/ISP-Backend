@@ -13,7 +13,7 @@ from ..env import UPLOAD_FOLDER, SIGNED_FOLDER
 
 class Accounts:
     
-    def login(self):
+    def login(self, request):
 
         # create password for account
         passphrase = Hash().hash(request.form.get('password').encode('utf-8'))
@@ -76,18 +76,18 @@ class Accounts:
             'pvt_key': kg_pvt
         }), 200
 
-    def add(self, id):
+    def add(self, request, id):
         
         # find user if exists in db 
         accounts_collection = mongo.db.get_collection('accounts')
 
         accounts_collection.update_one({
-            'email': request.form.get('studentid')
+            'email': request.get('studentid')
         }, {
             '$push': {
                 'documents': {
-                    'id': str(id),
-                    'certificate': request.form.get('certname')
+                    "id" : str(id),
+                    "certificate": request.get('certname')
                 }
             }
         })
@@ -105,16 +105,16 @@ class Documents():
         f.close()
         return data
 
-    def add(self, filename):
+    def add(self, request, filename):
 
         # certificate name
-        cert = request.form.get('certname')
+        cert = request.get('certname')
 
         # encrypt file 
         encrypted = self.filedata(filepath=UPLOAD_FOLDER, filename=filename)
 
         # sign the hash of original file using fingerprint
-        Signature().sign(filename=filename, password=request.form.get('password'), email=request.form.get('email'))
+        Signature().sign(filename=filename, password=request.get('password'), email=request.get('email'))
         signed = self.filedata(filepath=SIGNED_FOLDER, filename=filename+'.sig')
 
         # put the encrypted file and sign file on students documents array as object with 3 parameters
@@ -133,14 +133,13 @@ class Documents():
         # return the _id to use for users database
         return response.inserted_id
 
-    def sign(self):
-        
+    def sign(self, request):
         # get collection
         documents_collection = mongo.db.get_collection('documents')
 
         # find the document and sign the hash
         doc = documents_collection.find_one({
-            '_id': ObjectId(request.form.get('id'))
+            '_id': ObjectId(request.get('id'))
         })
 
         if(doc['sig_std'] == None):
@@ -150,8 +149,8 @@ class Documents():
             stream.write(doc['filedata'])
             stream.close()
 
-            # create sign 
-            Signature().sign(filename=doc['filename'], password=request.form.get('password'), email=request.form.get('email'))
+            # create sign
+            Signature().sign(filename=doc['filename'], password=request.get('password'), email=request.get('email'))
             
             if(not os.path.exists(SIGNED_FOLDER + doc['filename']+'.sig')):
                 return jsonify({
@@ -161,7 +160,7 @@ class Documents():
             
             # find the document entry with same hash
             documents_collection.update_one({
-                '_id': ObjectId(request.form.get('id'))
+                '_id': ObjectId(request.get('id'))
             }, {
                 '$set': {
                     'sig_std': signed
@@ -179,21 +178,34 @@ class Documents():
         else :
             return jsonify({
                 'message' : 'document already signed!'
-            }), 202
+            }), 202 
 
-    def get(self):
+    def get(self, docid):
 
         # get collection
         documents_collection = mongo.db.get_collection('documents')
 
         doc = documents_collection.find_one({
-            '_id': ObjectId(request.form.get('id'))
+            '_id': ObjectId(docid)
         })
+
+        # Because str() will throw error to convert None type to string
+        sig_reg = doc.get('sig_reg')
+        if (sig_reg is None):
+            sig_reg = "No Registrar Signature!"
+        else:
+            sig_reg = str(sig_reg, 'utf-8')
+
+        sig_std = doc.get('sig_std')
+        if (sig_std is None):
+            sig_std = "No Student Signature"
+        else:
+            sig_std = str(sig_std, 'utf-8')
 
         return jsonify({
             'message': str(doc['filedata'], 'utf-8'),
-            'signature faculty': str(doc['sig_reg'], 'utf-8'),
-            'signature student': str(doc['sig_std'], 'utf-8')
+            'signature faculty': sig_reg,
+            'signature student': sig_std
         }), 200
 
     def verify(self, doc, _hash, designation):
@@ -233,7 +245,6 @@ class Documents():
         # calculate hash
         stream = open(UPLOAD_FOLDER+doc['filename'], 'rb')
         _hash = Hash().hash(message=stream.read())
-
         # print('Actual Hash of File: ', _hash)
 
         # delete file

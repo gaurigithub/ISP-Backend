@@ -1,6 +1,7 @@
 usr = 'bits-certify'
 db = 'ISP'
 pwd = '7Ym4VfuhG28lNdeX'
+MAX_CONTENT_ALLOWED = 16 * 1000 * 1000
 UPLOAD_FOLDER = './crypto/uploads/'
 SIGNED_FOLDER = './crypto/signed/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf'}

@@ -1,13 +1,14 @@
 import gnupg
+from ..env import UPLOAD_FOLDER, GNUPG_HOME_GARVIT
 
 from key_generator import KeyGenerator
 
 class Encryptor:
     # setup gnupg
     def __init__(self):
-        self.documentspath = './uploads/'
+        self.documentspath = UPLOAD_FOLDER
         self.encryptpath = './encrypted/'
-        self.gpg = gnupg.GPG(gnupghome='/home/garvitsingh/.gnupg')
+        self.gpg = gnupg.GPG(gnupghome=GNUPG_HOME_GARVIT)
         self.gpg.encoding = 'utf-8'
 
     # keyid = fingerprint of student
@@ -23,11 +24,3 @@ class Encryptor:
 
         # close stream
         stream.close()
-
-if __name__ == "__main__":
-
-    kg = KeyGenerator()
-    print(kg.listing_key(True))
-
-    enc = Encryptor()
-    enc.encrypt(filename='test.txt', keyid='687909CED4F1E1882FC84221C1D07F3645328DDB')

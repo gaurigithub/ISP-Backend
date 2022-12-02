@@ -1,6 +1,6 @@
 from flask import Flask
 
-from .env import *
+from .env import usr, pwd, db, MAX_CONTENT_ALLOWED
 from .mongodb.mongo_connect import mongo
 from .routes.main import main
 
@@ -8,7 +8,6 @@ from .routes.main import main
 app = Flask(__name__)
 
 # config for file 
-MAX_CONTENT_ALLOWED = 16 * 1000 * 1000
 app.config['MAX_CONTENT_LENGTH'] = MAX_CONTENT_ALLOWED
 
 # config database & start mongose
