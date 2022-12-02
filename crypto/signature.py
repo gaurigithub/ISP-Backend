@@ -1,13 +1,13 @@
 import gnupg
 from .hash import Hash
-from ..env import UPLOAD_FOLDER, SIGNED_FOLDER
+from ..env import UPLOAD_FOLDER, SIGNED_FOLDER, GNUPG_HOME_GARVIT
 
 class Signature:
     # setup gnupg
     def __init__(self):
         self.documentspath = UPLOAD_FOLDER
         self.signaturepath = SIGNED_FOLDER
-        self.gpg = gnupg.GPG(gnupghome='/home/garvitsingh/.gnupg')
+        self.gpg = gnupg.GPG(gnupghome=GNUPG_HOME_GARVIT)
         self.gpg.encoding = 'utf-8'
 
     # keyid = fingerprint of signer

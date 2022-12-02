@@ -1,11 +1,11 @@
 # verifyer class
 import gnupg
-from ..env import SIGNED_FOLDER
+from ..env import SIGNED_FOLDER, GNUPG_HOME_GARVIT
 
 class Verifyer:
     def __init__(self):
         self.signedpath = SIGNED_FOLDER
-        self.gpg = gnupg.GPG(gnupghome='/home/garvitsingh/.gnupg')
+        self.gpg = gnupg.GPG(gnupghome=GNUPG_HOME_GARVIT)
         self.gpg.encoding = 'utf-8'
 
     def decrypt(self, filename, keyid=None):

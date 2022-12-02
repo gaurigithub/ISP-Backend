@@ -86,7 +86,7 @@ class Accounts:
         }, {
             '$push': {
                 'documents': {
-                    'id': id,
+                    'id': str(id),
                     'certificate': request.form.get('certname')
                 }
             }
@@ -152,6 +152,11 @@ class Documents():
 
             # create sign 
             Signature().sign(filename=doc['filename'], password=request.form.get('password'), email=request.form.get('email'))
+            
+            if(not os.path.exists(SIGNED_FOLDER + doc['filename']+'.sig')):
+                return jsonify({
+                    'message': 'Could not sign the file! Check passphrase!'
+                }), 400
             signed = self.filedata(filepath=SIGNED_FOLDER, filename=doc['filename']+'.sig')
             
             # find the document entry with same hash
@@ -201,7 +206,7 @@ class Documents():
 
         # get hash after verifying
         h = Verifyer().decrypt(filename, keyid=request.form.get(designation))
-        print('Hash from Verifyer: ', h)
+        # print('Hash from Verifyer: ', h)
 
         # delete file
         os.remove(os.path.join(SIGNED_FOLDER, filename+'.sig'))
@@ -229,7 +234,7 @@ class Documents():
         stream = open(UPLOAD_FOLDER+doc['filename'], 'rb')
         _hash = Hash().hash(message=stream.read())
 
-        print('Actual Hash of File: ', _hash)
+        # print('Actual Hash of File: ', _hash)
 
         # delete file
         os.remove(os.path.join(UPLOAD_FOLDER, doc['filename']))

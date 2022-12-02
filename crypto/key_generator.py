@@ -1,8 +1,9 @@
 import gnupg
+from ..env import GNUPG_HOME_GARVIT
 
 class KeyGenerator:
     def __init__(self):
-        self.gpg = gnupg.GPG(gnupghome='/home/garvitsingh/.gnupg')
+        self.gpg = gnupg.GPG(gnupghome=GNUPG_HOME_GARVIT)
         self.gpg.encoding = 'utf-8'
 
     def generate_key(self, name, email, secretkey, comment='#'):
