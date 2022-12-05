@@ -71,10 +71,10 @@ class Accounts:
         kg_pvt = kg.export_key(keyid=fp, pwd=passphrase, private=True)      # secret key export
         kg_pub = kg.export_key(keyid=fp)                                    # public key export
 
-        return jsonify({
+        return {
             'pub_key': kg_pub,
             'pvt_key': kg_pvt
-        }), 200
+        }, 200
 
     def add(self, request, id):
         

@@ -149,10 +149,15 @@ def login():
     redirected.set_cookie('message', message[0].response[0])
     return redirected
 
+@main.route('/keys', methods=['GET'])
+def keys():
+    return render_template('getkey.html')
+
 # fingerprint, password (original)
-@main.route('/getkeys', methods=['GET'])
+@main.route('/getkeys', methods=['POST'])
 def getkeys():
-    return Accounts().getkey()
+    message, _ = Accounts().getkey()
+    return render_template('showkey.html', pub_key=message['pub_key'], pvt_key=message['pvt_key'])
 
 # id (document _id)
 @main.route('/document', methods=['GET'])
