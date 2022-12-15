@@ -48,3 +48,10 @@ Code can be divided into 3 Major Modules
 
 ## Verifier Alert
 <img src="Images/Verifier Output.png">
+
+
+# How to run the code:
+Clone/download the code into a **linux** machine. There is a makefile that will do all the setup for you. For the setup, just run:
+**make install**;
+
+Then, to run the code, run **make linux** or just the last line in make linux. This starts the Flask server on localhost. Open up a browser window and navigate to localhost:3000 or 127.0.0.1:3000 to see the webpage. 
